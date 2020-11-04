@@ -20,8 +20,8 @@ module.exports = {
             inject: false
         }),
         new CopyWebpackPlugin([
-            { from: 'public' }
-        ])
+            { from: 'public' },
+        ]),
     ],
     module: {
         rules: [

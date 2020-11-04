@@ -10,7 +10,7 @@ html
 		meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
 
 		title= title
-	
+
 	body(style="display: none")
 		div.reveal
 			div.slides
@@ -66,5 +66,11 @@ html
 					span.main-title-size= title
 					div.main-title-placeholder-spacer
 					span.subtitle-subtle Thank you
+
+				section
+					h3 external Code
+					pre
+						code(data-sample='plugin/reveal-sampler/example/sample.c#3-7', data-sample-mark="3")
+
 
 		script(src="bundle.js")

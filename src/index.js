@@ -1,7 +1,7 @@
 import Reveal from './reveal'
 import './css'
 
-const theme = "night"
+const theme = "beige"
 const pdfTheme = "white"
 
 window.Reveal = Reveal
@@ -14,8 +14,36 @@ window.addEventListener('DOMContentLoaded', _ => {
             { src: 'plugin/markdown/marked.js' },
             { src: 'plugin/markdown/markdown.js' },
             { src: 'plugin/notes/notes.js', async: true },
-            { src: 'plugin/highlight/highlight.js', async: true }
-        ]
+            { src: 'plugin/highlight/highlight.js', async: true },
+            { src: 'plugin/search/search.js', async: true },
+            { src: 'plugin/math/math.js', async: true },
+            { src: 'plugin/menu/menu.js', async: true },
+            { src: 'plugin/toolbar/toolbar.js', async: true },
+            { src: 'plugin/reveal-sampler/sampler.js', async: true },
+            { src: 'plugin/time-bar/elapsed-time-bar.js', async: true }
+        ],
+        menu: {
+            numbers: "c/t",
+        },
+        toolbar: {
+            fullscreen: true,
+            overview: true,
+            notes: true,
+            captureMenu: true,
+            pause: true
+        },
+        allottedTime: 3*60*1000, // 3 min
+        progressBarHeight: 3,
+        barColor: 'rgb(200,0,0)',
+        keyboard: {
+            13: () => {
+                ElapsedTimeBar.isPaused ? ElapsedTimeBar.resume() : ElapsedTimeBar.pause();
+            },
+            82: () => {
+                ElapsedTimeBar.reset();
+            }
+        }
+
     });
     Reveal.configure({
         slideNumber: 'c/t',
@@ -73,6 +101,7 @@ window.addEventListener('DOMContentLoaded', _ => {
     link.rel = 'stylesheet';
     link.type = 'text/css';
     link.href =  isPrint ? 'css/print/pdf.css' : 'css/print/paper.css';
+    link.id = 'theme';
     document.getElementsByTagName('head')[0].appendChild(link);
 
     Reveal.addEventListener('slidechanged', event => {
