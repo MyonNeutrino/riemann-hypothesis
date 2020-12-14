@@ -56,8 +56,37 @@ html
 						include:markdown-it slides/Problems_notes.md
 
 				section
-					section
+					+main-title("Die Riemann-Hypothese")
+					div.slide-container(data-no-fragment=false)
+						ul
+							li zuerst vorgeschlagen im Jahr 1959
+							li "der Heilige Gral der Mathematik"
+							li verbunden mit vielen Teilbereichen, hauptsächlich Primzahlen
+						p(class="fragment") Wer war Riemann?
+						img(src="images/Georg_Friedrich_Bernhard_Riemann.jpeg" width="200" class="fragment riemann-image")
+						ul
+							li Georg Friedrich Bernhard Riemann, 1826–1866
+							li Hauptsächlich tätig in Differentialgeometrie
+							li hat eine Veröffentlichung in Zahlentheorie veröffentlicht
+
+					aside.notes
+						include:markdown-it slides/Basel_notes.md
+
+				section
+					section(data-no-fragment=false)
 						+main-title("Komplexe Riemann-Zeta Funktion")
+						div.slide-container(data-no-fragment=false)
+							p Die Riemann-Zeta Funktion ist definiert als:
+
+							p $\zeta(s) = \sum_{n=1}^{\infty} \frac{1}{n^s} $, mit $ s \in \mathbb{C} $
+
+							p(class="fragment") unendliche Reihe über komplexe Zahlen: 
+							ul
+								li Was bedeutet ein komplexer Exponent? 
+								li konvergent? 
+								li Was ist der Definitionsbereich?
+								li Was ist der Wertebereich?
+
 
 					section(data-background-iframe="mathbox/complex-numbers.html" data-background-interactive=true)
 					section

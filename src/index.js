@@ -32,6 +32,11 @@ window.addEventListener('DOMContentLoaded', _ => {
             captureMenu: true,
             pause: true
         },
+        math: {
+            mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+            config: 'TeX-AMS_HTML-full',
+        },
+        //plugins: [RevealMath],
         allottedTime: 10*60*1000, // 3 min
         progressBarHeight: 3,
         barColor: 'rgb(200,0,0)',

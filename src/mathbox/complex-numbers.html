@@ -67,6 +67,7 @@
     }
     async function removeCurrentSlideHtml(index) {
       selector = `.slide${index}-html`;
+      console.log(selector);
       elements = document.querySelector(selector);
       if (elements != null) {
         document.querySelector(selector).style.display = "none";
@@ -114,9 +115,55 @@
       }).present();
 
       //##################
-      // First slide
+      // (Zero) slide
       //##################
       slides.slide().reveal()
+      .cartesian({
+        range: [[-1, 1], [-1, 1], [-1, 1]],
+        scale: [1, 1, 1],
+      })
+
+      
+      // Number in the middle
+      .interval({
+        width: 1,
+        expr: function (emit, x, i, time, delta) {
+          emit(0,0);
+        },
+        realtime: false,
+        channels: 2,
+      }).html({
+        width: 8,
+        height: 3,
+        depth:  2,
+        expr: function (emit, el, i, j, k, l, time) {
+          // Emit latex element
+          const text = 'b^{ti} = e^{\\ln(b) \\cdot ti} = \\cos(\\ln(b) \\cdot t) + i \\cdot \\sin(\\ln(b) \\cdot t)';
+          elmnt = el('latex', {className: "slide1-html"}, text);
+          emit(elmnt);
+        },
+      }).dom({
+        snap: false,
+        depth: .5,
+        size: 100,
+        zoom: 1,
+        outline: 0,
+        visible: true,
+        attributes: {
+          "style": {
+            "color": "white",
+          },
+        },
+      })
+      
+
+      .end()
+      .end().end()
+
+      //##################
+      // First slide
+      //##################
+      .slide().reveal()
       // create the cartesian coordinate system
       .cartesian({
         range: [[-3, 3], [-4, 4], [-1, 1]],
@@ -248,7 +295,7 @@
         depth:  2,
         expr: function (emit, el, i, j, k, l, time) {
           // Emit latex element
-          elmnt = el('latex', {className: "slide1-html"}, '(\\frac{1}{2})^{\\color{yellow} {ti}}');
+          elmnt = el('latex', {className: "slide2-html"}, '(\\frac{1}{2})^{\\color{yellow} {ti}}');
           emit(elmnt);
         },
       }).dom({
@@ -280,7 +327,6 @@
 
       // The Point on the left, that visualizes the input
       .interval({
-        id: "input",
         width: 200,
         channels: 2,
         expr: function( emit, x, i, t, delta) {
@@ -293,7 +339,6 @@
 
       // The Circle on the right that visualizes the output set
       .interval({
-        id: "output",
         width: 200,
         channels: 2,
         expr: function( emit, x, i, t, delta) {
@@ -308,7 +353,6 @@
       // The Point on the right, rotating on the circle set, which is the output
       // corresponding to the input on the left
       .interval({
-        id: "output-dot",
         width: 200,
         channels: 2,
         expr: function( emit, x, i, t, delta) {
@@ -427,7 +471,7 @@
           expr: function (emit, el, i, j, k, l, time) {
           // Emit latex element
             equation = '(\\frac{1}{2})^{2 + i} = \\color{yellow}{(\\frac{1}{2})^{2}}\\color{thistle}{(\\frac{1}{2})^{i}}'
-            elmnt = el('latex', {className: "slide2-html"}, equation);
+            elmnt = el('latex', {className: "slide3-html"}, equation);
             emit(elmnt);
           },
         }).dom({
@@ -484,6 +528,7 @@
       script: [
         {props: {index: 1}},
         {props: {index: 2}},
+        {props: {index: 3}},
       ]
     })
     .end();
