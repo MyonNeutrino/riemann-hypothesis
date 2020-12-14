@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MathBox - Empty</title>
+  <script src="../plugin/mathbox/build/mathbox-bundle.js"></script>
+  <link rel="stylesheet" href="../plugin/mathbox/build/mathbox.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js"></script>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+  <style>
+    #mathbox-div {
+      height: 90vh;
+      width: 90vw;
+    }
+    body {
+      background-color: black;
+    }
+  </style>
+</head>
+<body>
+  <div id="mathbox-div"></div>
+  <div style="position: absolute; bottom: 15px; left: 50%; margin-left: -60px; width: 120px; font-size: 20px; text-align: center"><button onclick="previous()">&lt;</button><button onclick="next()">&gt;</button></div>
+  <script>
+    var element = document.querySelector('#mathbox-div');
+    var mathbox = mathBox({
+      plugins: ['core', 'controls', 'cursor', 'mathbox', 'stats'],
+      element: element,
+      controls: {
+        // Orbit controls, i.e. Euler angles, with gimbal lock
+        klass: THREE.OrbitControls,
+
+        // Trackball controls, i.e. Free quaternion rotation
+        //klass: THREE.TrackballControls,
+      },
+    });
+    if (mathbox.fallback) throw "WebGL not supported"
+
+    var three = mathbox.three;
+    three.renderer.setClearColor(new THREE.Color(0x000000), 0.0);
+
+    // Event listener for when this is included in a revealjs presentation
+    window.addEventListener('message', function(e) {
+      e = JSON.parse(e.data);
+      if(e.eventName == 'slide') {
+        present.set('index', e.value);
+      }
+    });
+    // Place camera
+    var camera =
+      mathbox
+      .camera({
+        proxy: true,
+        position: [0, 0, 8],
+      });
+
+    // Define global DOM handler to format 'latex' into an HTML span
+    MathBox.DOM.Types.latex = MathBox.DOM.createClass({
+      render: function (el) {
+        this.props.innerHTML = katex.renderToString(this.children);
+        return el('span', this.props);
+      }
+    });
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    async function removeCurrentSlideHtml(index) {
+      selector = `.slide${index}-html`;
+      elements = document.querySelector(selector);
+      if (elements != null) {
+        document.querySelector(selector).style.display = "none";
+        await sleep(1000);
+        document.querySelector(selector).remove();
+      }
+    }
+
+    // Define key right and left press events to move through slides
+    if (window == top)
+      window.onkeydown = function (e) {
+        switch (e.keyCode) {
+          case 37:
+          case 38:
+            removeCurrentSlideHtml(present.get('index'));
+            present.set('index', present.get('index') - 1);
+            break;
+          case 39:
+          case 40:
+            removeCurrentSlideHtml(present.get('index'));
+            present.set('index', present.get('index') + 1);
+            break;
+        }
+      }
+
+    // Define Button event functions
+    function previous() {
+      removeCurrentSlideHtml(present.get('index'));
+      present.set('index', present.get('index') - 1);
+    }
+    
+    function next() {
+      removeCurrentSlideHtml(present.get('index'));
+      present.set('index', present.get('index') + 1);
+    }
+
+    // Top level presentation
+    var present =
+      mathbox.present({
+        index: 1
+      });
+
+      var slides = present.slide({
+        steps: 6,
+      }).present();
+
+      //##################
+      // First slide
+      //##################
+      slides.slide().reveal()
+      // create the cartesian coordinate system
+      .cartesian({
+        range: [[-3, 3], [-4, 4], [-1, 1]],
+        scale: [3, 4, 1],
+      })
+
+      
+      // Left Coordinate system
+      .transform({
+        position: [-4, 0, 0]
+      })
+        .grid({
+          axes: [1, 2],
+          width: 2,
+          color: "rgb(65,165,190)",
+          depth: 1000,
+          factorX: 2,
+          factorY: 2,
+        })
+        .grid({
+          axes: [1, 2],
+          width: 1,
+          color: "rgb(41, 103, 119)",
+          depth: 1000,
+          factorX: 1,
+          factorY: 1,
+        })
+        .axis({
+          axis: 1,
+          width: 6,
+          color: "rgb(255,255,255)",
+        }).scale({
+          unit: 2,
+          axis: 1,
+        }).format({
+          digits: 2,
+          weight: 'bold',
+        }).label({
+          color: 'white',
+          zIndex: 1,
+          background: "black",
+          offset: [20,-20],
+        })
+        .axis({
+          axis: 2,
+          width: 6,
+          color: "rgb(255,240,0)",
+        }).scale({
+          unit: 2,
+          axis: 2,
+        }).format({
+          expr: function (x,y) {
+            return x ? `${x}i` : 0;
+          },
+        }).label({
+          color: 'white',
+          zIndex: 1,
+          background: "black",
+          offset: [20,-20],
+        })
+      .end()
+
+      // Right Coordinate System
+      .transform({
+        position: [4, 0, 0]
+      })
+        .grid({
+          axes: [1, 2],
+          width: 2,
+          color: "rgb(65,165,190)",
+          depth: 1000,
+          factorX: 2,
+          factorY: 2,
+        })
+        .grid({
+          axes: [1, 2],
+          width: 1,
+          color: "rgb(41, 103, 119)",
+          depth: 1000,
+          factorX: 1,
+          factorY: 1,
+        })
+        .axis({
+          axis: 1,
+          width: 6,
+          color: "rgb(255,255,255)",
+        }).scale({
+          unit: 2,
+          axis: 1,
+        }).format({
+          digits: 2,
+          weight: 'bold',
+        }).label({
+          color: 'white',
+          zIndex: 1,
+          background: "black",
+          offset: [20,-20],
+        })
+        .axis({
+          axis: 2,
+          width: 6,
+          color: "rgb(255,255,255)",
+        }).scale({
+          unit: 2,
+          axis: 2,
+        }).format({
+          expr: function (x,y) {
+            return x ? `${x}i` : 0;
+          },
+        }).label({
+          color: 'white',
+          zIndex: 1,
+          background: "black",
+          offset: [20,-20],
+        })
+      .end()
+
+      // Number in the middle
+      .interval({
+        width: 1,
+        expr: function (emit, x, i, time, delta) {
+          emit(0,0);
+        },
+        realtime: false,
+        channels: 2,
+      }).html({
+        width: 8,
+        height: 3,
+        depth:  2,
+        expr: function (emit, el, i, j, k, l, time) {
+          // Emit latex element
+          elmnt = el('latex', {className: "slide1-html"}, '(\\frac{1}{2})^{\\color{yellow} {ti}}');
+          emit(elmnt);
+        },
+      }).dom({
+        snap: false,
+        offset: [0, 100],
+        depth: .5,
+        size: 100,
+        zoom: 1,
+        outline: 0,
+        visible: true,
+        attributes: {
+          "style": {
+            "color": "white",
+          },
+        },
+      })
+      
+      // little Vector below the Number in the middle
+      .array({
+        data: [[-0.5,0,0], [0.5,0,0]],
+        channels: 3,
+        items: 2,
+        realtime: false,
+      }).vector({
+        color: "yellow",
+        width: 10,
+        end: true,
+      })
+
+      // The Point on the left, that visualizes the input
+      .interval({
+        id: "input",
+        width: 200,
+        channels: 2,
+        expr: function( emit, x, i, t, delta) {
+          emit(-4, 3*Math.sin(t));
+        }
+      }).point({
+        color: "yellow",
+        size: 20,
+      })
+
+      // The Circle on the right that visualizes the output set
+      .interval({
+        id: "output",
+        width: 200,
+        channels: 2,
+        expr: function( emit, x, i, t, delta) {
+          emit(Math.cos(x) + 4, Math.sin(x));
+        }
+      }).line({
+        color: "rgb(166, 115, 127)",
+        width: 10,
+        closed: true,
+      })
+
+      // The Point on the right, rotating on the circle set, which is the output
+      // corresponding to the input on the left
+      .interval({
+        id: "output-dot",
+        width: 200,
+        channels: 2,
+        expr: function( emit, x, i, t, delta) {
+          base = 1/2;
+          input = 3*Math.sin(t);
+          emit(Math.cos(Math.log(base)*input) + 4, Math.sin(Math.log(base)*input));
+        }
+      }).point({
+        color: "rgb(166, 115, 127)",
+        size: 20,
+      })
+
+      // The Text label on the left Coordinate System
+      .array({
+        data: [-4,4,0],
+        channels: 3,
+        realtime: false,
+      }).text({
+        data: ['Input space']
+      }).label({
+        size: 60,
+        outline: 0,
+        color: 'rgb(255,240,0)',
+      })
+      
+      // The Text label on the right Coordinate System
+      .array({
+        data: [4,4,0],
+        channels: 3,
+        realtime: false,
+      }).text({
+        data: ['Output space']
+      }).label({
+        size: 60,
+        outline: 0,
+        color: 'rgb(166, 115, 127)',
+      })
+      .end()
+      .end().end()
+
+      //##################
+      // The second slide
+      //##################
+      .slide().reveal()
+      // drawing the coordinate system
+      .cartesian({
+        range: [[-4, 4], [-2, 2], [-1, 1]],
+        scale: [4, 2, 1],
+      }).grid({
+          axes: [1, 2],
+          width: 2,
+          color: "rgb(65,165,190)",
+          depth: 1000,
+          factorX: 2,
+          factorY: 2,
+        }).grid({
+          axes: [1, 2],
+          width: 1,
+          color: "rgb(41, 103, 119)",
+          depth: 1000,
+          factorX: 1,
+          factorY: 1,
+        }).axis({
+          axis: 1,
+          width: 6,
+          color: "grey",
+        }).scale({
+          unit: 2,
+          axis: 1,
+        }).format({
+          digits: 2,
+          weight: 'bold',
+        }).label({
+          color: 'white',
+          zIndex: 1,
+          background: "black",
+          offset: [-20,-20],
+        }).axis({
+          axis: 2,
+          width: 6,
+          color: "grey",
+        }).scale({
+          unit: 1,
+          axis: 2,
+        }).format({
+          expr: function (x,y) {
+            return x ? `${x}i` : 0;
+          },
+        }).label({
+          color: 'white',
+          zIndex: 1,
+          background: "black",
+          offset: [-20,-20],
+        })
+        // drawing the rotation circle for the imaginary exponent part.
+        .interval({
+          width: 200,
+          channels: 2,
+          expr: function( emit, x, i, t, delta) {
+            emit(Math.cos(x), Math.sin(x));
+          }
+        }).line({
+          color: "rgb(166, 115, 127)",
+          width: 10,
+          closed: true,
+        })
+        // drawing the Equation top left
+        .array({
+          data: [-5,3,0],
+          channels: 3,
+          realtime: false,
+        }).html({
+          width: 8,
+          height: 3,
+          depth:  2,
+          expr: function (emit, el, i, j, k, l, time) {
+          // Emit latex element
+            equation = '(\\frac{1}{2})^{2 + i} = \\color{yellow}{(\\frac{1}{2})^{2}}\\color{thistle}{(\\frac{1}{2})^{i}}'
+            elmnt = el('latex', {className: "slide2-html"}, equation);
+            emit(elmnt);
+          },
+        }).dom({
+          snap: false,
+          offset: [0, 100],
+          depth: .5,
+          size: 100,
+          zoom: 1,
+          outline: 0,
+          visible: true,
+          attributes: {
+            "style": {
+              "color": "white",
+            },
+          },
+        })
+        // drawing the vector for the imaginary exponent part
+        .array({
+          data: [[0,0,0],[Math.cos(Math.log(2)),Math.sin(-Math.log(2)),0]],
+          channels: 3,
+          items: 2,
+          realtime: false,
+        }).vector({
+          end: true,
+          color: "thistle",
+          width: 10,
+        })
+        // drawing the real part
+        .array({
+          id: "realpart",
+          data: [[0,0,0],[1/4,0,0]],
+          channels: 3,
+        }).line({
+          color: "yellow",
+          width: 10,
+          end: true,
+        }).play({
+          target: "#realpart",
+          delay: 4,
+          pace: 1,
+          to: 2,
+          loop: true,
+          script: [
+            {props: {data: [[0,0,0],[1/4,0,0]]}},
+            {props: {data: [[0,0,0],[1/4*Math.cos(Math.log(2)),1/4*Math.sin(-Math.log(2)),0]]}},
+            {props: {data: [[0,0,0],[1/4,0,0]]}},
+          ]
+        })
+      .end().end()
+      .end().end()
+
+    .step({
+      duration: 0,
+      script: [
+        {props: {index: 1}},
+        {props: {index: 2}},
+      ]
+    })
+    .end();
+
+
+    // Calibrate focus distance for units
+    mathbox.set('focus', 3);
+
+    
+          /*
+    // Animate
+    var play = mathbox.play({
+      target: 'cartesian',
+      pace: 5,
+      to: 2,
+      loop: true,
+      script: [
+        {props: {range: [[-2, 2], [-1, 1]]}},
+        {props: {range: [[-4, 4], [-2, 2]]}},
+        {props: {range: [[-2, 2], [-1, 1]]}},
+      ]
+    });
+    */
+
+    
+  </script>
+</body>
+</html>

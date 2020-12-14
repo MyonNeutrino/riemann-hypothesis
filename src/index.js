@@ -1,7 +1,7 @@
 import Reveal from './reveal'
 import './css'
 
-const theme = "beige"
+const theme = "night"
 const pdfTheme = "white"
 
 window.Reveal = Reveal
@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', _ => {
             captureMenu: true,
             pause: true
         },
-        allottedTime: 3*60*1000, // 3 min
+        allottedTime: 10*60*1000, // 3 min
         progressBarHeight: 3,
         barColor: 'rgb(200,0,0)',
         keyboard: {
@@ -128,3 +128,33 @@ window.addEventListener('DOMContentLoaded', _ => {
 
     document.querySelector('body').style.display = ""
 })
+// var updateIframe = function (inds, el) {
+// 	var bg = Reveal.getSlideBackground(inds.h);
+// 	var iframe = bg.querySelector('iframe');
+// 	if (!el || el == iframe) {
+// 		iframe.contentWindow.postMessage(JSON.stringify({
+// 			namespace: 'reveal', eventName: 'slide', value: inds.v
+// 		}), '*');
+// 	}
+// };
+// // update mathbox when the step changes
+// Reveal.addEventListener( 'slidechanged', function(e) {
+//     console.log(Reveal.getIndices(e.currentSlide));
+// 	updateIframe(Reveal.getIndices(e.currentSlide));
+// });
+// // the above won't be received by iframes that aren't loaded
+// Reveal.addEventListener( 'ready', function() {
+// 	Array.from(document.querySelectorAll('iframe')).forEach(function(el) {
+// 		el.addEventListener('load', function() {
+// 			updateIframe(Reveal.getIndices(), el);
+// 		});
+// 	});
+// });
+
+// var iframeSlides = document.getElementsByTagName('section'); //gets all the section divs
+               
+// for(var i = 0; i < iframeSlides.length; i++ ){
+//     if (iframeSlides[i].dataset.backgroundIframe){ //looks to see if they have a data-background-iframe element
+//         console.log(iframeSlides[i].parentNode.style.zIndex = "-1"); //.style.display = 'none'  also failing style.visibility = 'hidden'; //if it does set the parent element to go to the back
+//     }
+// }

@@ -21,6 +21,7 @@ module.exports = {
         }),
         new CopyWebpackPlugin([
             { from: 'public' },
+            { from: 'src/mathbox', to: "mathbox" },
         ]),
     ],
     module: {

@@ -1,8 +1,9 @@
 doctype html
 
 include mixins/slide
+include mixins/main-title
 
-- const title = "My Presentation"
+- const title = "Die Riemann Hypothese"
 
 html
 	head
@@ -23,54 +24,88 @@ html
 				section(data-center)
 					span.main-title-size= title
 					div.main-title-placeholder-spacer
-					span.subtitle-subtle Foo bar baz lorem ipsum
-
-				+slide("Markdown with notes")
-					include:markdown-it slides/demo.md
-					
-					aside.notes
-						include:markdown-it slides/demo_notes.md
-
-				+slide("Markdown without notes")
-					include:markdown-it slides/demo2.md
-
-				+slide("List")
-					ul
-						li one
-						li two
-						li
-							| thee
-							| two
-							| one
-
-				+slide("Pros and Cons")
-					div.flex-row.stretch
-						div.flex-col.right-margin
-							span.fragment Pros
-							div.small-vspacer
-							ul.plus-list
-								li Meow
-								li Woof
-								ul
-									li nice
-
-						div.flex-col
-							span.fragment Cons
-							div.small-vspacer
-							ul.minus-list
-								li this
-								li that
-
-				section(data-center)
-					div(data-hide-me-on-print)
-					span.main-title-size= title
-					div.main-title-placeholder-spacer
-					span.subtitle-subtle Thank you
 
 				section
-					h3 external Code
-					pre
-						code(data-sample='plugin/reveal-sampler/example/sample.c#3-7', data-sample-mark="3")
+					+main-title("Inhalt")
+					div.slide-container(data-no-fragment=!useFragments)
+						ul 
+							li Millenium Problems
+							li Riemann Zeta Function
+							li Basel Problem
+							li Complex Riemann Zeta Function
+							li Holomorphic Function
+							li Analytic Continuation
+							li The actual question
+							li Prime Numbers
+					
+					aside.notes
+						include:markdown-it slides/Inhalt_notes.md
+
+				section
+					+main-title("Millenium Problems")
+					div.slide-container(data-no-fragment=true)
+						ul
+							li Vermutung von Birch und Swinnerton-Dyer
+							li Hodge conjecture
+							li Navier-Stokes-Gleichungen (Existenz und Regularität v. Lösungen)
+							li P-NP-Problem
+							li Poincaré-Vermutung
+							li Riemannsche Vermutung
+							li Yang-Mills-Gleichungen und Existenz der Massenlücke
+					aside.notes
+						include:markdown-it slides/Problems_notes.md
+
+				section
+					section
+						+main-title("Komplexe Riemann-Zeta Funktion")
+
+					section(data-background-iframe="mathbox/complex-numbers.html" data-background-interactive=true)
+					section
+
+					aside.notes
+						include:markdown-it slides/Complex_notes.md
+
+				section
+					+main-title("Basel Problem")
+					div.slide-container(data-no-fragment=true)
+
+					aside.notes
+						include:markdown-it slides/Basel_notes.md
+
+				section
+					+main-title("Holomorphic Function")
+					div.slide-container(data-no-fragment=true)
+
+					aside.notes
+						include:markdown-it slides/Holomorphic_notes.md
+
+				section
+					+main-title("Analytic Continuation")
+					div.slide-container(data-no-fragment=true)
+
+					aside.notes
+						include:markdown-it slides/Continuation_notes.md
+
+				section
+					+main-title("")
+					div.slide-container(data-no-fragment=true)
+
+					aside.notes
+						include:markdown-it slides/question_notes.md
+
+				section
+					+main-title("Prime Numbers")
+					div.slide-container(data-no-fragment=true)
+
+					aside.notes
+						include:markdown-it slides/Primes_notes.md
+
+				section
+					+main-title("Julia Sets")
+					div.slide-container(data-no-fragment=true)
+
+					aside.notes
+						include:markdown-it slides/Julia_notes.md
 
 
 		script(src="bundle.js")
